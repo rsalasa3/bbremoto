@@ -1,0 +1,15 @@
+Package: bbremoto
+Version: 1.0
+Priority: optional
+Architecture: all
+Essential:
+Depends: python3
+Pre-depends:
+Suggests:
+Installed-Size: 1024
+Maintainer: petrusribeirolimadacosta@gmail.com
+Conflicts:
+Replaces:
+Provides:
+Homepage: https://github.com/PetrusRibeiroLimaDaCosta/bbremoto
+Description: Acesso à VPN Banco do Brasil

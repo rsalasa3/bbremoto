@@ -1,0 +1,161 @@
+#!/usr/bin/env python
+#!/usr/bin/python
+
+import sys
+import os
+import gi
+gi.require_version("Gtk", "3.0")
+gi.require_version('AppIndicator3', '0.1')
+from gi.repository import Gtk, Gdk, AppIndicator3
+
+status = ["Status: VPN Conectada", "Status: VPN Desconectada"]
+formato = "\n\t\t    : "
+strVazio = ""
+caractere = [";", ","]
+textoBotao = ["Conectar", "Desconectar"]
+modoLeitura = "r"
+modoEscrita = "w"
+strEncoding = "utf-8"
+snxDesconectar = "snx -d"
+diretorioBbremoto = os.path.abspath(os.path.dirname(__file__))
+bbremotoGladeXML = diretorioBbremoto + "/bbremoto.glade"
+p12Conf = diretorioBbremoto + "/.p12.conf"
+
+itemAbrir = Gtk.MenuItem(label='Abrir')
+itemEsconder = Gtk.MenuItem(label='Esconder')
+
+builder = Gtk.Builder()
+builder.add_from_file(bbremotoGladeXML)
+
+class Handler(object):
+  def __init__(self, **kwargs):
+    super(Handler, self).__init__(**kwargs)
+
+    self.window = builder.get_object("bbremoto")
+    self.window.show_all()
+
+    self.app = 'bbremoto'
+    iconpath = diretorioBbremoto+"/logobb.png"
+    self.testindicator = AppIndicator3.Indicator.new(self.app, iconpath, AppIndicator3.IndicatorCategory.OTHER)
+    self.testindicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)       
+    self.testindicator.set_menu(self.create_menuAppIndicator())
+
+
+    self.senha = builder.get_object("senha")
+    self.msgErroSenha = builder.get_object("msgErroSenha")
+    self.status = builder.get_object("status")
+    self.detalhes = builder.get_object("detalhes")
+    self.certificado = builder.get_object("certificado")
+    self.msgErroCertificado = builder.get_object("msgErroCertificado")
+    self.filefilter = builder.get_object(".p12")
+    self.certificado.add_filter(self.filefilter)
+    if (self.arquivoP12ConfExiste()):
+      self.certificado.set_filename(self.abrirArquivoP12Conf())
+
+  def create_menuAppIndicator(self):
+    menuAppIndicator = Gtk.Menu()
+    itemAbrir.connect('activate', self.exibir)
+    itemEsconder.connect('activate', self.ocultar)
+    menuAppIndicator.append(itemAbrir)
+    itemAbrir.set_sensitive(False)
+    menuAppIndicator.append(itemEsconder)
+    menuAppIndicator.show_all()
+    return menuAppIndicator
+
+  def on_about_activate(self, window):
+    self.sobre = builder.get_object("sobre")
+    self.sobre.run()
+    self.sobre.hide()
+
+  def arquivoP12ConfExiste(self):
+    return os.path.isfile(p12Conf)
+
+  def abrirArquivoP12Conf(self):
+    return self.lerOuGravarP12Conf(modoLeitura)
+
+  def selecionarCertificado(self, widget):
+    if (strVazio != self.certificado.get_filename()):
+      self.lerOuGravarP12Conf(modoEscrita)
+    
+  def lerOuGravarP12Conf(self, modo):
+    with open(p12Conf, modo, encoding=strEncoding) as p12:
+      if (modoLeitura == modo):
+        return p12.read()
+      elif (modoEscrita == modo):
+        p12.write(self.certificado.get_filename())
+
+  def conectar(self, button):
+    if (self.validarEntrada()):
+      if ((textoBotao[0] == button.get_label()) and (self.conectarVPN())):
+        button.set_label(textoBotao[1])
+        self.status.set_label(status[0])
+        self.senha.set_editable(False)
+      elif ((textoBotao[1] == button.get_label()) and (self.desconectarVPN())):
+        button.set_label(textoBotao[0])
+        self.status.set_label(status[1])
+        self.senha.set_editable(True)
+
+  def validarEntrada(self):
+    self.limparCampos()
+    if (self.senha.get_text() == strVazio):
+      self.msgErroSenha.set_label("Digite a senha do certificado")
+      return False
+    elif (self.certificado.get_filename() == None):
+      self.msgErroCertificado.set_label("Selecione o certificado")
+      return False
+    else:
+      return True
+
+  def limparCampos(self):
+    self.detalhes.set_label(strVazio)
+    self.msgErroSenha.set_label(strVazio)
+    self.msgErroCertificado.set_label(strVazio)
+
+  def conectarVPN(self):
+    snxConectar = "echo " + self.senha.get_text() + " | snx -s bbremotolinux.bb.com.br -c " + self.certificado.get_filename()
+    detalhesConexaoFormatada = os.popen(snxConectar).read()
+    self.formatarDetalhesConexao(detalhesConexaoFormatada)
+    return ("SNX - connected." in detalhesConexaoFormatada)
+
+  def desconectarVPN(self):
+    detalhesConexaoFormatada = os.popen(snxDesconectar).read()
+    self.formatarDetalhesConexao(detalhesConexaoFormatada)
+    return ("SNX - Disconnecting..." in detalhesConexaoFormatada)
+
+  def formatarDetalhesConexao(self, detalhesConexao):
+    if (caractere[0] in detalhesConexao):
+      self.detalhes.set_label(detalhesConexao.replace(caractere[0], formato))
+    elif (caractere[1] in detalhesConexao):
+      self.detalhes.set_label(detalhesConexao.replace(caractere[1], formato))
+    else:
+      self.detalhes.set_label(detalhesConexao)
+
+  def do_delete_event(self, widget, event):
+      if (status[0] == self.status.get_label()):
+        confirmaSair = Gtk.MessageDialog(transient_for=self.window,
+                              modal=True,
+                              buttons=Gtk.ButtonsType.OK_CANCEL)
+        confirmaSair.props.text = 'ATENÇÃO: À VPN será desconectada, tem certeza?'
+        response = confirmaSair.run()
+        confirmaSair.destroy()
+        if response == Gtk.ResponseType.OK:
+            return False
+        return True
+
+  def ocultar(self, window):
+    itemEsconder.set_sensitive(False)
+    itemAbrir.set_sensitive(True)
+    self.window.hide()
+
+  def exibir(self, window):
+    itemAbrir.set_sensitive(False)
+    itemEsconder.set_sensitive(True)
+    self.window.show_all()
+
+  def sair(self, window):
+    os.system(snxDesconectar)
+    Gtk.main_quit()
+
+if __name__ == "__main__":
+  builder.connect_signals(Handler())
+  Gtk.main()

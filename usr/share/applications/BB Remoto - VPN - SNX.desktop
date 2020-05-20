@@ -1,0 +1,10 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon[pt_BR]=/opt/bbremoto/logobb.png
+Name[pt_BR]=BB Remoto - VPN - SNX
+Exec=/opt/bbremoto/bbremoto.sh
+Name=BB Remoto - VPN - SNX
+Icon=/opt/bbremoto/logobb.png
