@@ -24,6 +24,7 @@ logobb.png – Arquivo de imagem utilizado para identificar o ícone do “BB Re
 20/05/2020 – Remove arquivo bbremoto.tar.gz e substitui pelo bbremoto_1.0_all.deb, adiciona caixa de dialogo que informa ao usuário que à VPN será desconectada caso ele queira fechar o programa e adiciona a funcionalidade de esconder o programa na barra de tarefas. - Petrus Ribeiro Lima da Costa
 
 7. Defeitos conhecidos:
+Ao tentar executar o bbremoto um erro informando que não foi localizado o gi.appindicator3, favor executar o seguinte comando: sudo apt-get install libappindicator3-dev
 Me ajudem a achar defeitos, obrigado.
 
 8. Informação de contato com o desenvolvedor:
