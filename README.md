@@ -3,7 +3,7 @@
 O programa “BB Remoto – VPN – SNX” é uma interface gráfica que permite e facilita o uso do programa SSL Network Extender (SNX) da empresa Check Point Software Technologies Ltd.
 
 2. Instruções sobre configuração:
-Para que o “BB Remoto – VPN – SNX” possa funcionar corretamente é necessária a prévia instalação do SNX em seu sistema operacional Linux, caso não tenha realizado a instalação, favor seguir o passo a passo descrito no arquivo “Guia-CheckPoint-VPN-v1.2.pdf”.
+Para que o “BB Remoto – VPN – SNX” possa funcionar corretamente é necessária a prévia instalação do SNX em seu sistema operacional Linux, caso não tenha realizado a instalação, favor seguir o passo a passo descrito no arquivo https://vpn.labbs.com.br/wp-content/uploads/2020/03/Guia-CheckPoint-VPN-v1.2.pdf
 
 3. Instruções sobre instalação:
 A instalação será realizada pelo arquivo bbremoto_1.0_all.deb, podendo ser executado pelo navegador arquivo, utilizando o instalador de pacotes GDebi ou pelo terminar, sudo dpkg -i bbremoto_1.0_all.deb
