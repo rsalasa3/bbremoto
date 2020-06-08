@@ -3,7 +3,7 @@ Version: 1.0
 Priority: optional
 Architecture: all
 Essential:
-Depends: python3
+Depends: python3, libappindicator3-dev
 Pre-depends:
 Suggests:
 Installed-Size: 1024
