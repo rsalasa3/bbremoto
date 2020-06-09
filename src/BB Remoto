@@ -37,7 +37,7 @@ class Handler(object):
     self.app = 'bbremoto'
     iconpath = diretorioBbremoto+"/logobb.png"
     self.testindicator = AppIndicator3.Indicator.new(self.app, iconpath, AppIndicator3.IndicatorCategory.OTHER)
-    self.testindicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)       
+    self.testindicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
     self.testindicator.set_menu(self.create_menuAppIndicator())
 
 
@@ -76,7 +76,7 @@ class Handler(object):
   def selecionarCertificado(self, widget):
     if (strVazio != self.certificado.get_filename()):
       self.lerOuGravarP12Conf(modoEscrita)
-    
+
   def lerOuGravarP12Conf(self, modo):
     with open(p12Conf, modo, encoding=strEncoding) as p12:
       if (modoLeitura == modo):
@@ -135,7 +135,7 @@ class Handler(object):
         confirmaSair = Gtk.MessageDialog(transient_for=self.window,
                               modal=True,
                               buttons=Gtk.ButtonsType.OK_CANCEL)
-        confirmaSair.props.text = 'ATENÇÃO: À VPN será desconectada, tem certeza?'
+        confirmaSair.props.text = 'ATENÇÃO: A VPN será desconectada, tem certeza?'
         response = confirmaSair.run()
         confirmaSair.destroy()
         if response == Gtk.ResponseType.OK:

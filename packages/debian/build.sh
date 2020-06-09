@@ -11,6 +11,7 @@ cp ../../src/bbremoto.glade src/opt/bbremoto/
 cp ../../src/bbremoto.sh src/opt/bbremoto/
 cp ../../src/logobb.png src/opt/bbremoto/
 cp ../../src/BB\ Remoto src/opt/bbremoto/
+touch src/opt/bbremoto/.p12.conf
 
 dpkg-deb -b ./src .
 rm -rf src/opt src/usr
