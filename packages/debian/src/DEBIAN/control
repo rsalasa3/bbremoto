@@ -1,0 +1,11 @@
+Package: bbremoto-gui
+Version: 1.0
+Architecture: all
+Depends: python3, libappindicator3-dev
+Description: GUI para o cliente VPN "snx"
+Source: bbremoto-gui
+Section: unknown
+Priority: optional
+Maintainer: Petrus Ribeiro <petrusribeirolimadacosta@gmail.com>
+Standards-Version: 4.4.1
+Homepage: https://github.com/PetrusRibeiroLimaDaCosta/bbremoto
