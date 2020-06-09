@@ -46,9 +46,9 @@ petrusribeirolimadacosta@gmail.com
 GNU General Public License, version 3 or later – https://www.gnu.org/licenses/gpl-3.0.html
 
 ## 9. Créditos e agradecimentos
-**Créditos**   
-Petrus Ribeiro Lima da Costa
-Kaue Doretto Grecchi
+**Créditos**
+Petrus Ribeiro Lima da Costa.
+Kaue Doretto Grecchi.
 
 **Agradecimentos**   
 Ao software livre e as pessoas e comunidades que compartilham na Internet seus conhecimentos.
