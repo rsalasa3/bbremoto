@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 
-VERSION=$(grep -P "Version: .+" src/DEBIAN/control | cut -d" " -f 2)
-dpkg-deb -b ./src bbremoto-gui_${VERSION}.deb
+[ -d src/usr ] && rm -rf /src/usr;
+[ -d src/opt ] && rm -rf /src/opt;
 
-cp bbremoto-gui_${VERSION}.deb bbremoto-gui_latest.deb
+mkdir -p src/usr/share/applications/
+cp ../../src/BB\ Remoto\ -\ VPN\ -\ SNX.desktop src/usr/share/applications
+
+mkdir -p src/opt/bbremoto/
+cp ../../src/bbremoto.glade src/opt/bbremoto/
+cp ../../src/bbremoto.sh src/opt/bbremoto/
+cp ../../src/logobb.png src/opt/bbremoto/
+cp ../../src/BB\ Remoto src/opt/bbremoto/
+
+dpkg-deb -b ./src .
+rm -rf src/opt src/usr
